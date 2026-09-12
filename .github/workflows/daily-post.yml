@@ -1,0 +1,26 @@
+name: Daily LinkedIn Post
+
+on:
+  schedule:
+    - cron: '30 3 * * *'  # 9:00 AM IST (UTC+5:30) every day
+  workflow_dispatch:        # Allow manual trigger from GitHub UI
+
+jobs:
+  generate-and-send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate LinkedIn post and send email
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: node scripts/daily-post.mjs
