@@ -3,7 +3,7 @@ import { setTimeout } from 'timers/promises';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const EMAIL_TO = 'jadhavatharva20@gmail.com';
-const MODEL = 'gemini-3.6-flash';
+const MODEL = 'gemini-2.5-flash';
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 if (!GEMINI_API_KEY) throw new Error('Missing GEMINI_API_KEY env var');
