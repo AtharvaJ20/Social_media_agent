@@ -9,21 +9,23 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MO
 if (!GEMINI_API_KEY) throw new Error('Missing GEMINI_API_KEY env var');
 if (!RESEND_API_KEY) throw new Error('Missing RESEND_API_KEY env var');
 
-// ── RPD vs RPM quota discrimination ──────────────────────────────────────────
-// Gemini returns 429 for both per-minute (RPM) and per-day (RPD) exhaustion.
-// RPM errors include a RetryInfo detail with a short retryDelay — backing off
-// and retrying works. RPD errors have no RetryInfo — retrying never helps and
-// only burns more of the same exhausted quota.
-function isDailyQuotaExhausted(errorData) {
-  if (errorData?.error?.status !== 'RESOURCE_EXHAUSTED') return false;
-  const hasRetryInfo = errorData?.error?.details?.some(
+// ── Quota error helpers ───────────────────────────────────────────────────────
+// Gemini returns 429 for both RPM (per-minute) and RPD (per-day) exhaustion.
+// RPM errors include a RetryInfo detail with the exact seconds to wait.
+// RPD errors have no RetryInfo — retrying never helps; fail fast.
+
+function getRetryDelayMs(errorData) {
+  const retryInfo = errorData?.error?.details?.find(
     (d) => d['@type']?.includes('RetryInfo')
   );
-  return !hasRetryInfo;
+  if (!retryInfo) return null; // no RetryInfo → daily quota exhausted
+  // retryDelay is a string like "30s" or "60s"
+  const seconds = parseInt(retryInfo.retryDelay) || 60;
+  return seconds * 1000;
 }
 
 // ── Gemini call with retry ────────────────────────────────────────────────────
-async function callGemini(contents, useSearch = false, retries = 3) {
+async function callGemini(contents, useSearch = false, retries = 2) {
   const body = {
     contents,
     generationConfig: { maxOutputTokens: 4000 },
@@ -44,24 +46,34 @@ async function callGemini(contents, useSearch = false, retries = 3) {
         .join('') || '';
     }
 
-    if (res.status === 429 && isDailyQuotaExhausted(data)) {
-      throw new Error(
-        `Gemini daily quota exhausted — retrying will not recover this.\n` +
-        `Quota resets at midnight Pacific time (~12:30 AM IST).\n` +
-        `ACTION REQUIRED: create a second Gemini API key at https://aistudio.google.com/apikey\n` +
-        `and update the GitHub Secret GEMINI_API_KEY to use it. Keep your original key in\n` +
-        `backend/.env for local development so the two quota pools stay separate.\n` +
-        `Gemini message: ${data?.error?.message || 'RESOURCE_EXHAUSTED'}`
-      );
+    if (res.status === 429) {
+      const rpmDelayMs = getRetryDelayMs(data);
+      if (rpmDelayMs === null) {
+        // No RetryInfo → daily (RPD) quota exhausted; no point retrying
+        throw new Error(
+          `Gemini daily quota exhausted — retrying will not recover this.\n` +
+          `Quota resets at midnight Pacific time (~12:30 AM IST).\n` +
+          `Ensure the GitHub Secret GEMINI_API_KEY uses a different key from backend/.env\n` +
+          `so local development does not consume the workflow's daily quota.\n` +
+          `Gemini message: ${data?.error?.message || 'RESOURCE_EXHAUSTED'}`
+        );
+      }
+      // RPM limit — Gemini tells us exactly how long to wait
+      if (attempt < retries) {
+        console.warn(`Gemini RPM limit hit — waiting ${rpmDelayMs / 1000}s before retry (attempt ${attempt + 1}/${retries})`);
+        await setTimeout(rpmDelayMs);
+        continue;
+      }
     }
 
-    const retryable = res.status === 503 || res.status === 429;
-    if (retryable && attempt < retries) {
-      const delay = 2000 * Math.pow(2, attempt);
-      console.warn(`Gemini ${res.status} (transient) — retrying in ${delay}ms (attempt ${attempt + 1}/${retries})`);
+    if (res.status === 503 && attempt < retries) {
+      // Transient infra error — short backoff is appropriate here
+      const delay = 5000 * Math.pow(2, attempt); // 5s, 10s
+      console.warn(`Gemini 503 (transient) — retrying in ${delay / 1000}s (attempt ${attempt + 1}/${retries})`);
       await setTimeout(delay);
       continue;
     }
+
     throw new Error(`Gemini API error ${res.status}: ${JSON.stringify(data)}`);
   }
 }
