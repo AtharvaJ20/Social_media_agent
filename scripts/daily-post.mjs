@@ -9,6 +9,19 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MO
 if (!GEMINI_API_KEY) throw new Error('Missing GEMINI_API_KEY env var');
 if (!RESEND_API_KEY) throw new Error('Missing RESEND_API_KEY env var');
 
+// ── RPD vs RPM quota discrimination ──────────────────────────────────────────
+// Gemini returns 429 for both per-minute (RPM) and per-day (RPD) exhaustion.
+// RPM errors include a RetryInfo detail with a short retryDelay — backing off
+// and retrying works. RPD errors have no RetryInfo — retrying never helps and
+// only burns more of the same exhausted quota.
+function isDailyQuotaExhausted(errorData) {
+  if (errorData?.error?.status !== 'RESOURCE_EXHAUSTED') return false;
+  const hasRetryInfo = errorData?.error?.details?.some(
+    (d) => d['@type']?.includes('RetryInfo')
+  );
+  return !hasRetryInfo;
+}
+
 // ── Gemini call with retry ────────────────────────────────────────────────────
 async function callGemini(contents, useSearch = false, retries = 3) {
   const body = {
@@ -30,10 +43,22 @@ async function callGemini(contents, useSearch = false, retries = 3) {
         .map((p) => p.text)
         .join('') || '';
     }
+
+    if (res.status === 429 && isDailyQuotaExhausted(data)) {
+      throw new Error(
+        `Gemini daily quota exhausted — retrying will not recover this.\n` +
+        `Quota resets at midnight Pacific time (~12:30 AM IST).\n` +
+        `ACTION REQUIRED: create a second Gemini API key at https://aistudio.google.com/apikey\n` +
+        `and update the GitHub Secret GEMINI_API_KEY to use it. Keep your original key in\n` +
+        `backend/.env for local development so the two quota pools stay separate.\n` +
+        `Gemini message: ${data?.error?.message || 'RESOURCE_EXHAUSTED'}`
+      );
+    }
+
     const retryable = res.status === 503 || res.status === 429;
     if (retryable && attempt < retries) {
       const delay = 2000 * Math.pow(2, attempt);
-      console.warn(`Gemini ${res.status} — retrying in ${delay}ms (attempt ${attempt + 1}/${retries})`);
+      console.warn(`Gemini ${res.status} (transient) — retrying in ${delay}ms (attempt ${attempt + 1}/${retries})`);
       await setTimeout(delay);
       continue;
     }
