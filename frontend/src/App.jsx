@@ -16,7 +16,7 @@ const PLATFORMS = {
     id: "linkedin", label: "LinkedIn", icon: "💼",
     color: "#0A66C2", bg: "#EEF4FF", accent: "#004182",
     keywords: ["linkedin", "linked in", "professional", "career", "job", "network"],
-    style: "First-person 'what I learned' post. Structure: Hook (a surprising thing I learned, starting with 'I learned that...' or 'Something surprised me:'), Context (how/where I encountered this — a project, paper, or experiment), The Learning (the actual insight with a specific fact or stat woven in naturally), Why It Matters (practical impact for engineers). End with a genuine question asking what the reader has noticed. Tone: curious and honest, like sharing a discovery with peers. Use 1 emoji per section. 3–5 professional hashtags.",
+    style: "First-person reading-based learning post for a student. Structure: Hook ('I was reading...' or 'Came across an article by X and...'), What I Read (name the source and topic briefly), The Learning (the actual insight in your own words with a specific fact woven in), Why It Stuck (why this was surprising or useful at your learning stage). End with a genuine CTA question. DO NOT fabricate experiences like 'while building X' — context must always be reading an article, paper, or docs. Tone: honest and curious. 1 emoji per section. Always include #LearningInPublic in hashtags.",
     charLimit: 3000,
   },
   twitter: {

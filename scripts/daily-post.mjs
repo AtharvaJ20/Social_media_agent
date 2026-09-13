@@ -78,23 +78,24 @@ async function callGemini(contents, useSearch = false, retries = 2) {
   }
 }
 
-// ── Step 1: Find today's trending topic via Google Search ─────────────────────
+// ── Step 1: Find a real article or doc to read ───────────────────────────────
 async function findTrendingTopic() {
-  const prompt = `Search the web for the most relevant and trending topic TODAY in AI engineering or data engineering.
+  const prompt = `Search the web for a real, specific article, blog post, research paper, or official documentation published in the past 7 days about AI engineering or data engineering.
 
-Look for:
-- Releases, breakthroughs, or debates from the past 7 days
-- Practical topics engineers are actively discussing (tools, frameworks, patterns, challenges)
-- Topics with real production impact — not academic or theoretical
+Look for content a student learning AI/data engineering would actually read:
+- Official docs or release notes (LangChain, LlamaIndex, dbt, Spark, Iceberg, etc.)
+- Engineering blog posts (Anthropic, Google DeepMind, Meta AI, Hugging Face, Databricks, Airflow, etc.)
+- Research paper summaries or explanations
+- Practical tutorials or deep-dives on tools/frameworks
 
-Pick ONE specific, actionable topic. Avoid generic angles like "AI is growing".
-Good examples: "LangGraph vs CrewAI for multi-agent pipelines", "Apache Iceberg adoption surges in 2026", "Context window limits killing RAG pipelines".
+The article must be REAL and findable — do not invent a title or source.
 
 Respond ONLY with a JSON object, no markdown, no backticks:
 {
-  "topic": "<specific topic title>",
-  "keyFact": "<one specific stat, benchmark, or recent development found via search>",
-  "source": "<publication or website name>"
+  "topic": "<specific topic the article covers, e.g. 'How LangGraph handles state in multi-agent workflows'>",
+  "keyFact": "<one concrete insight, stat, or finding from the article>",
+  "source": "<real publication or website name, e.g. 'Hugging Face Blog', 'Anthropic Research', 'The Databricks Blog'>",
+  "articleType": "<'blog post' | 'research paper' | 'official documentation' | 'tutorial'>"
 }`;
 
   const raw = await callGemini([{ role: 'user', parts: [{ text: prompt }] }], true);
@@ -106,26 +107,26 @@ Respond ONLY with a JSON object, no markdown, no backticks:
 // ── Step 2: Write the LinkedIn post ──────────────────────────────────────────
 async function generatePost(topic) {
   const currentYear = new Date().getFullYear();
-  const prompt = `You are writing a LinkedIn post for Atharva Jadhav, a student based in India who is building a career in AI engineering. Atharva learns through personal projects, online courses, research papers, and open-source experimentation — he is not a working professional. The current year is ${currentYear}.
+  const prompt = `You are writing a LinkedIn post for Atharva Jadhav, a student in India building a career in AI engineering. He is not a working professional. He reads articles, blog posts, research papers, and documentation to learn — that is his honest source of knowledge. The current year is ${currentYear}.
 
-Topic: "${topic.topic}"
-Key fact to weave in: "${topic.keyFact}" (source: ${topic.source})
+He just read a ${topic.articleType} from ${topic.source} about: "${topic.topic}"
+Key insight from what he read: "${topic.keyFact}"
 
-Write the post in this EXACT structure — do not skip or reorder sections:
+Write the post in this EXACT structure. DO NOT fabricate experiences like "while building X" or "at work I noticed" — Atharva did not build anything, he READ something. The context must always be reading-based.
 
-HOOK (1-2 lines): A surprising, counterintuitive, or eye-opening thing Atharva recently learned about this topic. Start with "I learned that..." or "I didn't know that..." or "Something surprised me this week:". Use 1 emoji at the start. Make it feel genuinely personal, not like a news headline.
+HOOK (1-2 lines): A surprising or eye-opening thing from what he read. Start with "I was reading..." or "Came across a ${topic.articleType} by ${topic.source} and..." or "Just read something that changed how I think about...". Use 1 emoji. Honest and specific.
 
-CONTEXT (2-3 lines): Briefly how this came up — a side project, an online course, reading a paper, trying to implement something from scratch, exploring a GitHub repo, watching a talk. Keep it grounded in student experience. First-person only.
+WHAT I READ (1-2 lines): Name the source and what it was about. e.g. "It was a post by ${topic.source} covering ${topic.topic}." Keep it brief — just enough context so the reader knows what sparked this.
 
-THE LEARNING (3-4 lines): The actual insight, technique, or concept — explained clearly and concisely. Weave in the key fact naturally. Concrete details, not vague summaries. Use 1 emoji at the start.
+THE LEARNING (3-4 lines): The actual insight Atharva took away from reading it. Explain it clearly in his own words. Weave in the key fact naturally. Use 1 emoji.
 
-WHY IT MATTERS (2-3 lines): Why this matters for someone learning AI/data engineering. What would have helped Atharva understand this earlier? Use 1 emoji at the start.
+WHY IT STUCK (2-3 lines): Why this particular insight was useful or surprising for someone at his stage of learning AI engineering. Honest student perspective. Use 1 emoji.
 
-CTA: One genuine question asking what the reader has learned or noticed about this topic recently.
+CTA: One genuine question for the reader — about the topic, or asking what they've read recently that surprised them.
 
-HASHTAGS: 3-5 relevant hashtags on a new line. Always include #LearningInPublic or #BuildingInPublic alongside topic-specific ones.
+HASHTAGS: 3-5 relevant hashtags. Always include #LearningInPublic alongside topic-specific ones.
 
-Tone: first-person, curious, honest — like a student sharing a genuine discovery with peers, not an expert teaching. Total: 150-250 words.
+Tone: curious, honest, first-person — a student sharing what he read, not an expert sharing what he built. Total: 150-250 words.
 
 Respond ONLY with a JSON object, no markdown, no backticks:
 {
@@ -192,7 +193,8 @@ async function main() {
   console.log('🔍 Step 1: Finding trending topic in AI/data engineering...');
   const topic = await findTrendingTopic();
   console.log(`✅ Topic: ${topic.topic}`);
-  console.log(`   Fact: ${topic.keyFact} (${topic.source})`);
+  console.log(`   Source: ${topic.articleType} from ${topic.source}`);
+  console.log(`   Fact: ${topic.keyFact}`);
 
   console.log('\n✍️  Step 2: Generating LinkedIn post...');
   const { post, subject } = await generatePost(topic);
