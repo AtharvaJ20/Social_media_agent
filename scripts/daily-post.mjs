@@ -80,13 +80,18 @@ async function callGemini(contents, useSearch = false, retries = 2) {
 
 // ── Step 1: Find a real article or doc to read ───────────────────────────────
 async function findTrendingTopic() {
-  const prompt = `Search the web for a real, specific article, blog post, research paper, or official documentation published in the past 7 days about AI engineering or data engineering.
+  const prompt = `Search the web for a real, specific article, blog post, research paper, or official documentation published in the past 7 days about AI engineering, data engineering, or the tech stacks used to build AI systems.
 
-Look for content a student learning AI/data engineering would actually read:
-- Official docs or release notes (LangChain, LlamaIndex, dbt, Spark, Iceberg, etc.)
-- Engineering blog posts (Anthropic, Google DeepMind, Meta AI, Hugging Face, Databricks, Airflow, etc.)
-- Research paper summaries or explanations
-- Practical tutorials or deep-dives on tools/frameworks
+Look for content a student learning AI engineering would actually read:
+- LLMs and foundation models (GPT, Claude, Gemini, Llama, Mistral — architecture, fine-tuning, prompting, evals)
+- RAG (retrieval-augmented generation) — chunking strategies, vector databases, re-ranking
+- AI frameworks and libraries (LangChain, LlamaIndex, LangGraph, CrewAI, Haystack, DSPy)
+- Serving and APIs (FastAPI, vLLM, Ollama, LiteLLM, OpenAI-compatible APIs)
+- Vector databases and search (Pinecone, Weaviate, Chroma, Qdrant, pgvector, FAISS)
+- Data engineering for AI (dbt, Spark, Iceberg, Airflow, Kafka — especially when used in ML pipelines)
+- MLOps and deployment (MLflow, Weights & Biases, BentoML, Ray Serve, model monitoring)
+- Official docs or release notes from any of the above ecosystems
+- Engineering blog posts (Anthropic, Google DeepMind, Meta AI, Hugging Face, Databricks, LangChain, etc.)
 
 The article must be REAL and findable — do not invent a title or source.
 
@@ -108,6 +113,8 @@ Respond ONLY with a JSON object, no markdown, no backticks:
 async function generatePost(topic) {
   const currentYear = new Date().getFullYear();
   const prompt = `You are writing a LinkedIn post for Atharva Jadhav, a student in India building a career in AI engineering. The current year is ${currentYear}.
+
+Topics can be about: LLMs, RAG, AI frameworks (LangChain, LlamaIndex, LangGraph, etc.), serving tools (FastAPI, vLLM, Ollama), vector databases, MLOps, data engineering for AI pipelines, or any tech stack used to build AI systems.
 
 Topic: "${topic.topic}"
 Key insight to share: "${topic.keyFact}"
