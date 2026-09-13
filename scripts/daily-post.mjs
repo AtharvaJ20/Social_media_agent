@@ -131,7 +131,7 @@ CTA: One open question for the reader about this topic.
 
 HASHTAGS: 3-5 relevant hashtags. Always include #LearningInPublic.
 
-Tone: curious, direct, first-person — a student thinking out loud about something interesting, not an expert or a journalist. Total: 150-250 words.
+Tone: curious, direct, first-person — a student thinking out loud, not an expert or journalist. Language must be simple and plain — short sentences, everyday words, no unnecessary jargon. If a technical term is needed, explain it in one line. Anyone reading it should be able to follow along without a CS degree. Total: 150-250 words.
 
 Respond ONLY with a JSON object, no markdown, no backticks:
 {
