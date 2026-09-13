@@ -113,17 +113,19 @@ Key fact to weave in: "${topic.keyFact}" (source: ${topic.source})
 
 Write the post in this EXACT structure — do not skip or reorder sections:
 
-HOOK (2-3 lines): A short personal story or vivid real-world scenario. First-person or observational. Immediately relatable to engineers. Use 1 emoji at the start.
+HOOK (1-2 lines): A surprising, counterintuitive, or eye-opening thing Atharva recently learned about this topic. Start with "I learned that..." or "I didn't know that..." or "Something surprised me this week:". Use 1 emoji at the start. Make it feel genuinely personal, not like a news headline.
 
-PROBLEM: One short paragraph — what is broken, inefficient, or overlooked in this space. Be direct. Use 1 emoji at the start.
+CONTEXT (2-3 lines): Briefly how or where this learning came up — a project, a paper, a conversation, hands-on testing. Keep it grounded and specific. First-person only.
 
-SOLUTION: How it is being solved or should be solved. Reference the key fact above naturally. Concrete, not vague. Use 1 emoji at the start.
+THE LEARNING (3-4 lines): The actual insight, technique, or concept — explained clearly and concisely. Weave in the key fact naturally. Concrete details, not vague summaries. Use 1 emoji at the start.
 
-CTA: One open-ended question to drive comments from AI/data engineering professionals.
+WHY IT MATTERS (2-3 lines): The practical impact for AI engineers and data engineers. What changes if you know this? Use 1 emoji at the start.
+
+CTA: One genuine question asking what the reader has learned or noticed about this topic recently.
 
 HASHTAGS: 3-5 relevant professional hashtags on a new line.
 
-Tone: professional but human — not corporate-speak, not hype. Total: 150-250 words.
+Tone: first-person, curious, honest — like sharing a genuine discovery with peers, not teaching a lesson. Total: 150-250 words.
 
 Respond ONLY with a JSON object, no markdown, no backticks:
 {

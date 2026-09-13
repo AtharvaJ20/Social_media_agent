@@ -16,7 +16,7 @@ const PLATFORMS = {
     id: "linkedin", label: "LinkedIn", icon: "💼",
     color: "#0A66C2", bg: "#EEF4FF", accent: "#004182",
     keywords: ["linkedin", "linked in", "professional", "career", "job", "network"],
-    style: "Professional thought-leadership post with a bold insight opener, structured paragraphs, real data/stats from the latest trends, a key takeaway, and 3–5 professional hashtags. Use 1–2 relevant emojis per section to improve readability (e.g. 🚀 🤖 💡 📊). Cite specific recent developments.",
+    style: "First-person 'what I learned' post. Structure: Hook (a surprising thing I learned, starting with 'I learned that...' or 'Something surprised me:'), Context (how/where I encountered this — a project, paper, or experiment), The Learning (the actual insight with a specific fact or stat woven in naturally), Why It Matters (practical impact for engineers). End with a genuine question asking what the reader has noticed. Tone: curious and honest, like sharing a discovery with peers. Use 1 emoji per section. 3–5 professional hashtags.",
     charLimit: 3000,
   },
   twitter: {
