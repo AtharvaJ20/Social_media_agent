@@ -107,26 +107,31 @@ Respond ONLY with a JSON object, no markdown, no backticks:
 // ── Step 2: Write the LinkedIn post ──────────────────────────────────────────
 async function generatePost(topic) {
   const currentYear = new Date().getFullYear();
-  const prompt = `You are writing a LinkedIn post for Atharva Jadhav, a student in India building a career in AI engineering. He is not a working professional. He reads articles, blog posts, research papers, and documentation to learn — that is his honest source of knowledge. The current year is ${currentYear}.
+  const prompt = `You are writing a LinkedIn post for Atharva Jadhav, a student in India building a career in AI engineering. The current year is ${currentYear}.
 
-He just read a ${topic.articleType} from ${topic.source} about: "${topic.topic}"
-Key insight from what he read: "${topic.keyFact}"
+Topic: "${topic.topic}"
+Key insight to share: "${topic.keyFact}"
 
-Write the post in this EXACT structure. DO NOT fabricate experiences like "while building X" or "at work I noticed" — Atharva did not build anything, he READ something. The context must always be reading-based.
+IMPORTANT RULES — read carefully before writing:
+- Do NOT mention any source, article, blog, paper, or documentation
+- Do NOT say "I read X" or "I was reading X" or "according to X"
+- Do NOT say "I built X" or "while working on X" or "at work I noticed"
+- Do NOT claim any specific experience that may not have happened
+- Write as a student sharing thoughts on a topic they find interesting — no origin story needed
 
-HOOK (1-2 lines): A surprising or eye-opening thing from what he read. Start with "I was reading..." or "Came across a ${topic.articleType} by ${topic.source} and..." or "Just read something that changed how I think about...". Use 1 emoji. Honest and specific.
+Write the post in this EXACT structure:
 
-WHAT I READ (1-2 lines): Name the source and what it was about. e.g. "It was a post by ${topic.source} covering ${topic.topic}." Keep it brief — just enough context so the reader knows what sparked this.
+HOOK (1-2 lines): A surprising, counterintuitive, or underrated thing about this topic. State it directly — no need to explain where it came from. Use 1 emoji.
 
-THE LEARNING (3-4 lines): The actual insight Atharva took away from reading it. Explain it clearly in his own words. Weave in the key fact naturally. Use 1 emoji.
+THE CONCEPT (3-4 lines): Explain the topic clearly and simply in your own words. Weave in the key insight naturally. Speak as someone who finds this genuinely interesting. Use 1 emoji.
 
-WHY IT STUCK (2-3 lines): Why this particular insight was useful or surprising for someone at his stage of learning AI engineering. Honest student perspective. Use 1 emoji.
+WHY IT MATTERS FOR LEARNERS (2-3 lines): Why a student getting into AI engineering should care about this. What changes when you understand it? Use 1 emoji.
 
-CTA: One genuine question for the reader — about the topic, or asking what they've read recently that surprised them.
+CTA: One open question for the reader about this topic.
 
-HASHTAGS: 3-5 relevant hashtags. Always include #LearningInPublic alongside topic-specific ones.
+HASHTAGS: 3-5 relevant hashtags. Always include #LearningInPublic.
 
-Tone: curious, honest, first-person — a student sharing what he read, not an expert sharing what he built. Total: 150-250 words.
+Tone: curious, direct, first-person — a student thinking out loud about something interesting, not an expert or a journalist. Total: 150-250 words.
 
 Respond ONLY with a JSON object, no markdown, no backticks:
 {

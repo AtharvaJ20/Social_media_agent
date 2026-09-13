@@ -16,7 +16,7 @@ const PLATFORMS = {
     id: "linkedin", label: "LinkedIn", icon: "💼",
     color: "#0A66C2", bg: "#EEF4FF", accent: "#004182",
     keywords: ["linkedin", "linked in", "professional", "career", "job", "network"],
-    style: "First-person reading-based learning post for a student. Structure: Hook ('I was reading...' or 'Came across an article by X and...'), What I Read (name the source and topic briefly), The Learning (the actual insight in your own words with a specific fact woven in), Why It Stuck (why this was surprising or useful at your learning stage). End with a genuine CTA question. DO NOT fabricate experiences like 'while building X' — context must always be reading an article, paper, or docs. Tone: honest and curious. 1 emoji per section. Always include #LearningInPublic in hashtags.",
+    style: "Student thinking out loud about an AI/data engineering topic. NO source claims ('I read X'), NO experience claims ('I built X' or 'at work I noticed'). Structure: Hook (a surprising or counterintuitive thing about this topic, stated directly), The Concept (explain it clearly in your own words with a specific insight woven in), Why It Matters For Learners (why a student getting into AI should care). End with a genuine CTA question. Tone: curious and direct, like a student sharing thoughts — not a journalist or expert. 1 emoji per section. Always include #LearningInPublic.",
     charLimit: 3000,
   },
   twitter: {
