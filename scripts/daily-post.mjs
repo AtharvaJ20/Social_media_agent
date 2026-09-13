@@ -106,7 +106,7 @@ Respond ONLY with a JSON object, no markdown, no backticks:
 // ── Step 2: Write the LinkedIn post ──────────────────────────────────────────
 async function generatePost(topic) {
   const currentYear = new Date().getFullYear();
-  const prompt = `You are writing a LinkedIn post for Atharva Jadhav, an AI engineer and data engineer based in India. The current year is ${currentYear}.
+  const prompt = `You are writing a LinkedIn post for Atharva Jadhav, a student based in India who is building a career in AI engineering. Atharva learns through personal projects, online courses, research papers, and open-source experimentation — he is not a working professional. The current year is ${currentYear}.
 
 Topic: "${topic.topic}"
 Key fact to weave in: "${topic.keyFact}" (source: ${topic.source})
@@ -115,17 +115,17 @@ Write the post in this EXACT structure — do not skip or reorder sections:
 
 HOOK (1-2 lines): A surprising, counterintuitive, or eye-opening thing Atharva recently learned about this topic. Start with "I learned that..." or "I didn't know that..." or "Something surprised me this week:". Use 1 emoji at the start. Make it feel genuinely personal, not like a news headline.
 
-CONTEXT (2-3 lines): Briefly how or where this learning came up — a project, a paper, a conversation, hands-on testing. Keep it grounded and specific. First-person only.
+CONTEXT (2-3 lines): Briefly how this came up — a side project, an online course, reading a paper, trying to implement something from scratch, exploring a GitHub repo, watching a talk. Keep it grounded in student experience. First-person only.
 
 THE LEARNING (3-4 lines): The actual insight, technique, or concept — explained clearly and concisely. Weave in the key fact naturally. Concrete details, not vague summaries. Use 1 emoji at the start.
 
-WHY IT MATTERS (2-3 lines): The practical impact for AI engineers and data engineers. What changes if you know this? Use 1 emoji at the start.
+WHY IT MATTERS (2-3 lines): Why this matters for someone learning AI/data engineering. What would have helped Atharva understand this earlier? Use 1 emoji at the start.
 
 CTA: One genuine question asking what the reader has learned or noticed about this topic recently.
 
-HASHTAGS: 3-5 relevant professional hashtags on a new line.
+HASHTAGS: 3-5 relevant hashtags on a new line. Always include #LearningInPublic or #BuildingInPublic alongside topic-specific ones.
 
-Tone: first-person, curious, honest — like sharing a genuine discovery with peers, not teaching a lesson. Total: 150-250 words.
+Tone: first-person, curious, honest — like a student sharing a genuine discovery with peers, not an expert teaching. Total: 150-250 words.
 
 Respond ONLY with a JSON object, no markdown, no backticks:
 {
