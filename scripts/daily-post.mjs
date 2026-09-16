@@ -119,26 +119,36 @@ Topics can be about: LLMs, RAG, AI frameworks (LangChain, LlamaIndex, LangGraph,
 Topic: "${topic.topic}"
 Key insight to share: "${topic.keyFact}"
 
-IMPORTANT RULES — read carefully before writing:
+CONTENT RULES:
 - Do NOT mention any source, article, blog, paper, or documentation
 - Do NOT say "I read X" or "I was reading X" or "according to X"
 - Do NOT say "I built X" or "while working on X" or "at work I noticed"
 - Do NOT claim any specific experience that may not have happened
 - Write as a student sharing thoughts on a topic they find interesting — no origin story needed
 
-Write the post in this EXACT structure:
+HUMANISATION RULES — these are critical, follow every one:
+- Vary sentence lengths a lot. Mix very short sentences (3–5 words) with longer ones. Don't make every sentence the same length.
+- Use contractions everywhere: it's, don't, I'm, you'll, that's, isn't, can't, won't
+- It's okay to start a sentence with "And", "But", or "So" — real people do this
+- Use casual filler phrases a student would actually think: "Honestly,", "Here's the thing —", "And this is the part that got me:", "Not a lot of people talk about this.", "Which makes sense, right?", "Think about it."
+- Do NOT make all sections the same length or feel. Let them breathe differently.
+- Avoid these AI buzzwords completely: delve, leverage, crucial, paramount, game-changer, unlock, foster, facilitate, it's worth noting, in conclusion, in summary, testament, invaluable, multifaceted, groundbreaking, cutting-edge, ever-evolving, seamlessly, robust
+- Don't write like an essay. Write like a student typing a post on their phone — a little unpolished, a little excited.
+- Add a moment of genuine opinion or mild surprise somewhere: "This actually surprised me.", "I didn't expect this.", "Weird, right?"
 
-HOOK (1-2 lines): A surprising, counterintuitive, or underrated thing about this topic. State it directly — no need to explain where it came from. Use 1 emoji.
+STRUCTURE (follow loosely — not like a rigid template):
 
-THE CONCEPT (3-4 lines): Explain the topic clearly and simply in your own words. Weave in the key insight naturally. Speak as someone who finds this genuinely interesting. Use 1 emoji.
+HOOK (1-2 lines): A surprising or underrated thing about this topic. Direct, a little punchy. 1 emoji.
 
-WHY IT MATTERS FOR LEARNERS (2-3 lines): Why a student getting into AI engineering should care about this. What changes when you understand it? Use 1 emoji.
+THE CONCEPT (3-5 lines): Explain it in your own words. Mix short and long sentences. Weave in the key insight. 1 emoji.
 
-CTA: One open question for the reader about this topic.
+WHY IT MATTERS FOR LEARNERS (2-3 lines): Why a student getting into AI should care. Can be casual and direct. 1 emoji.
 
-HASHTAGS: 3-5 relevant hashtags. Always include #LearningInPublic.
+CTA: One genuine question for the reader. Make it feel like you're actually curious, not just filling a template.
 
-Tone: curious, direct, first-person — a student thinking out loud, not an expert or journalist. Language must be simple and plain — short sentences, everyday words, no unnecessary jargon. If a technical term is needed, explain it in one line. Anyone reading it should be able to follow along without a CS degree. Total: 150-250 words.
+HASHTAGS: 3-5 hashtags. Always include #LearningInPublic.
+
+Total: 150-250 words. The post should feel like a real student wrote it, not an AI generating a LinkedIn post.
 
 Respond ONLY with a JSON object, no markdown, no backticks:
 {
